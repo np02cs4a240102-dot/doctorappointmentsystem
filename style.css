@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e6f0fa 0%, #d0e2f0 100%);
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Header Styling */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    color: #1a3c5c;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #2c7da0;
+    font-size: 1.1rem;
+}
+
+hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #2c7da0, #1a3c5c, #2c7da0, transparent);
+    margin: 15px 0;
+}
+
+/* Navigation Menu */
+table[bgcolor="#f0f0f0"] {
+    background: white !important;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+table[bgcolor="#f0f0f0"] td {
+    padding: 12px 20px;
+}
+
+a {
+    color: #1a3c5c;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #2c7da0;
+    background: #e6f0fa;
+    border-radius: 30px;
+}
+
+/* Fieldset / Card Styling */
+fieldset {
+    border: 2px solid #cde3f0;
+    border-radius: 20px;
+    padding: 20px 25px;
+    background: white;
+    box-shadow: 0 9px 20px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+legend {
+    background: #1a3c5c;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border: none;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="time"],
+select {
+    padding: 10px 15px;
+    border: 2px solid #d4e4ef;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 350px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2c7da0;
+    box-shadow: 0 0 0 3px rgba(44,125,160,0.1);
+}
+
+/* Buttons */
+button {
+    background: #2c7da0;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background: #1a5a7a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table[border="1"] {
+    border: 1px solid #cde3f0;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+th {
+    background: #1a3c5c;
+    color: white;
+    padding: 12px;
+    font-weight: 600;
+}
+
+td {
+    padding: 12px;
+    border: 1px solid #cde3f0;
+    vertical-align: top;
+}
+
+tr:nth-child(even) {
+    background: #f8fbfe;
+}
+
+tr:hover {
+    background: #eef4fa;
+}
+
+/* Small text inside tables */
+small {
+    color: #5a8fae;
+    font-size: 0.8rem;
+}
+
+/* Paragraph text */
+p {
+    color: #2c5a7a;
+    margin-top: 12px;
+}
+
+/* Info card / Tip box */
+div[style*="background: #f9f9f9"] {
+    background: #eef4fa !important;
+    border: 1px solid #cde3f0 !important;
+    border-radius: 15px !important;
+    padding: 12px 18px !important;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #2c7da0;
+    font-weight: 500;
+}
+
+/* Back to Top Link */
+p[align="center"] a {
+    display: inline-block;
+    background: white;
+    padding: 8px 20px;
+    border-radius: 30px;
+    color: #1a3c5c;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+p[align="center"] a:hover {
+    background: #1a3c5c;
+    color: white;
+}
+
+/* Add New Slot table styling */
+table[cellpadding="5"] td {
+    border: none;
+    padding: 5px;
+}
+
+table[cellpadding="5"] {
+    background: transparent;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    fieldset {
+        padding: 15px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="time"],
+    select {
+        max-width: 100%;
+    }
+    
+    table,
+    td,
+    th {
+        font-size: 0.85rem;
+    }
+    
+    button {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    legend {
+        font-size: 0.95rem;
+        padding: 5px 15px;
+    }
+}
