@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Doctor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <h2>MediCare Connect</h2>
+    <div>
+      <a href="find_doctor.html">Find Doctor</a>
+      <a href="patient_login.html">Logout</a>
+    </div>
+  </div>
+
+  <div class="page-container">
+    <h1>Find a Doctor</h1>
+    <p class="page-description">Browse specialists and book appointments with ease.</p>
+
+    <div class="filter-bar">
+      <input type="text" id="search" placeholder="Search doctor by name..." />
+      <select id="specialization">
+        <option value="">All Specializations</option>
+        <option>Cardiologist</option>
+        <option>Dentist</option>
+        <option>Dermatologist</option>
+        <option>Neurologist</option>
+        <option>Pediatrician</option>
+        <option>Orthopedic</option>
+      </select>
+    </div>
+
+    <div class="doctor-list">
+      <div class="doctor-card" data-name="Dr. John Smith" data-specialization="Cardiologist">
+        <span class="badge">Available Today</span>
+        <h3>Dr. John Smith</h3>
+        <p><strong>Specialization:</strong> Cardiologist</p>
+        <p><strong>Experience:</strong> 10 Years</p>
+        <p><strong>Availability:</strong> Mon-Fri, 10AM-4PM</p>
+        <a href="book_appointment.html?doctor=Dr. John Smith"><button>Book Appointment</button></a>
+      </div>
+
+      <div class="doctor-card" data-name="Dr. Sarah Lee" data-specialization="Dermatologist">
+        <span class="badge">Top Rated</span>
+        <h3>Dr. Sarah Lee</h3>
+        <p><strong>Specialization:</strong> Dermatologist</p>
+        <p><strong>Experience:</strong> 7 Years</p>
+        <p><strong>Availability:</strong> Tue-Sat, 11AM-5PM</p>
+        <a href="book_appointment.html?doctor=Dr. Sarah Lee"><button>Book Appointment</button></a>
+      </div>
+
+      <div class="doctor-card" data-name="Dr. David Kim" data-specialization="Dentist">
+        <span class="badge">Popular</span>
+        <h3>Dr. David Kim</h3>
+        <p><strong>Specialization:</strong> Dentist</p>
+        <p><strong>Experience:</strong> 8 Years</p>
+        <p><strong>Availability:</strong> Mon-Sat, 9AM-3PM</p>
+        <a href="book_appointment.html?doctor=Dr. David Kim"><button>Book Appointment</button></a>
+      </div>
+
+      <div class="doctor-card" data-name="Dr. Emily Clark" data-specialization="Pediatrician">
+        <span class="badge">Recommended</span>
+        <h3>Dr. Emily Clark</h3>
+        <p><strong>Specialization:</strong> Pediatrician</p>
+        <p><strong>Experience:</strong> 6 Years</p>
+        <p><strong>Availability:</strong> Mon-Fri, 10AM-2PM</p>
+        <a href="book_appointment.html?doctor=Dr. Emily Clark"><button>Book Appointment</button></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("search");
+    const specializationFilter = document.getElementById("specialization");
+    const doctorCards = document.querySelectorAll(".doctor-card");
+
+    function filterDoctors() {
+      const searchValue = searchInput.value.toLowerCase();
+      const specializationValue = specializationFilter.value.toLowerCase();
+
+      doctorCards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const specialization = card.dataset.specialization.toLowerCase();
+
+        const matchesSearch = name.includes(searchValue);
+        const matchesSpecialization = !specializationValue || specialization === specializationValue;
+
+        card.style.display = (matchesSearch && matchesSpecialization) ? "block" : "none";
+      });
+    }
+
+    searchInput.addEventListener("input", filterDoctors);
+    specializationFilter.addEventListener("change", filterDoctors);
+  </script>
+</body>
+</html>
