@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Signup</title>
+  <link rel="stylesheet" href="styleofpatient.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <h2>Create Patient Account</h2>
+      <p class="subtitle">Join to book appointments with trusted doctors</p>
+
+      <div id="errorMsg" class="alert error">Passwords do not match!</div>
+
+      <form id="signupForm">
+        <input type="text" placeholder="Full Name" required />
+        <input type="email" placeholder="Email Address" required />
+        <input type="tel" placeholder="Phone Number" required />
+        <input type="number" placeholder="Age" required min="1" max="120" />
+        <select required>
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+        <input type="password" placeholder="Create Password" required minlength="6" />
+        <input type="password" placeholder="Confirm Password" required minlength="6" />
+        <button type="submit">Create Account</button>
+      </form>
+
+      <p>Already have an account? <a href="patient_login.html">Login</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const errorMsg = document.getElementById("errorMsg");
+      errorMsg.style.display = "none";
+
+      const pass = this.querySelectorAll('input[type="password"]');
+      if (pass[0].value !== pass[1].value) {
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      alert("Signup successful!");
+      window.location.href = "patient_login.html?signup=success";
+    });
+  </script>
+</body>
+</html>
