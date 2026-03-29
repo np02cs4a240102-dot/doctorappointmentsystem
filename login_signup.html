@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e8eaf0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      width: 340px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+      background-color: #3b6abf;
+      color: white;
+      text-align: center;
+      padding: 14px 0;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .tab-switcher {
+      display: flex;
+      margin: 16px 16px 0 16px;
+      border: 1px solid #3b6abf;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      background: #ffffff;
+      color: #3b6abf;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .tab-btn.active {
+      background-color: #3b6abf;
+      color: #ffffff;
+    }
+
+    .form-section {
+      padding: 16px;
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: #222;
+      margin-bottom: 5px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 7px 8px;
+      border: 1px solid #aaa;
+      border-radius: 3px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #3b6abf;
+    }
+
+    .role-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 12px 0 16px 0;
+      justify-content: center;
+    }
+
+    .role-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .role-group input[type="radio"] {
+      accent-color: #3b6abf;
+      width: 14px;
+      height: 14px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 9px 0;
+      background-color: #3b6abf;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:hover {
+      background-color: #2e55a0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="card-header">Login / Sign up</div>
+
+    <!-- Tab Switcher -->
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div class="form-section active" id="loginForm">
+      <div class="form-group">
+        <label for="login_username">Username / Email</label>
+        <input type="text" id="login_username" name="username" />
+      </div>
+      <div class="form-group">
+        <label for="login_password">Password</label>
+        <input type="password" id="login_password" name="password" />
+      </div>
+      <div class="role-group">
+        <label>
+          <input type="radio" name="login_role" value="patient" checked />
+          Patient
+        </label>
+        <label>
+          <input type="radio" name="login_role" value="doctor" />
+          Doctor
+        </label>
+      </div>
+      <button class="submit-btn" onclick="handleLogin()">Login</button>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div class="form-section" id="signupForm">
+      <div class="form-group">
+        <label for="signup_username">Username / Email</label>
+        <input type="text" id="signup_username" name="username" />
+      </div>
+      <div class="form-group">
+        <label for="signup_password">Password</label>
+        <input type="password" id="signup_password" name="password" />
+      </div>
+      <div class="form-group">
+        <label for="signup_confirm">Confirm Password</label>
+        <input type="password" id="signup_confirm" name="confirm_password" />
+      </div>
+      <div class="role-group">
+        <label>
+          <input type="radio" name="signup_role" value="patient" checked />
+          Patient
+        </label>
+        <label>
+          <input type="radio" name="signup_role" value="doctor" />
+          Doctor
+        </label>
+      </div>
+      <button class="submit-btn" onclick="handleSignup()">Sign Up</button>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      const loginTabBtn = document.getElementById('loginTabBtn');
+      const signupTabBtn = document.getElementById('signupTabBtn');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      if (tab === 'login') {
+        loginTabBtn.classList.add('active');
+        signupTabBtn.classList.remove('active');
+        loginForm.classList.add('active');
+        signupForm.classList.remove('active');
+      } else {
+        signupTabBtn.classList.add('active');
+        loginTabBtn.classList.remove('active');
+        signupForm.classList.add('active');
+        loginForm.classList.remove('active');
+      }
+    }
+
+    function handleLogin() {
+      const role = document.querySelector('input[name="login_role"]:checked').value;
+      const username = document.getElementById('login_username').value;
+      const password = document.getElementById('login_password').value;
+
+      if (!username || !password) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      // Redirect based on role
+      if (role === 'patient') {
+        // window.location.href = 'patient_dashboard.php';
+        alert('Logging in as Patient...');
+      } else {
+        // window.location.href = 'doctor_dashboard.php';
+        alert('Logging in as Doctor...');
+      }
+    }
+
+    function handleSignup() {
+      const role = document.querySelector('input[name="signup_role"]:checked').value;
+      const username = document.getElementById('signup_username').value;
+      const password = document.getElementById('signup_password').value;
+      const confirm = document.getElementById('signup_confirm').value;
+
+      if (!username || !password || !confirm) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      if (password !== confirm) {
+        alert('Passwords do not match!');
+        return;
+      }
+
+      // Redirect based on role
+      if (role === 'patient') {
+        // window.location.href = 'patient_dashboard.php';
+        alert('Signing up as Patient...');
+      } else {
+        // window.location.href = 'doctor_dashboard.php';
+        alert('Signing up as Doctor...');
+      }
+    }
+  </script>
+
+</body>
+</html>
