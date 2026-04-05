@@ -3,269 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login / Sign Up</title>
+  <title>Login / Sign Up — MediCare Connect</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: #e8eaf0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .card {
-      background: #ffffff;
-      width: 340px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .card-header {
-      background-color: #3b6abf;
-      color: white;
-      text-align: center;
-      padding: 14px 0;
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-    }
-
-    .tab-switcher {
-      display: flex;
-      margin: 16px 16px 0 16px;
-      border: 1px solid #3b6abf;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 8px 0;
-      border: none;
-      background: #ffffff;
-      color: #3b6abf;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .tab-btn.active {
-      background-color: #3b6abf;
-      color: #ffffff;
-    }
-
-    .form-section {
-      padding: 16px;
-      display: none;
-    }
-
-    .form-section.active {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      color: #222;
-      margin-bottom: 5px;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"] {
-      width: 100%;
-      padding: 7px 8px;
-      border: 1px solid #aaa;
-      border-radius: 3px;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .form-group input:focus {
-      border-color: #3b6abf;
-    }
-
-    .role-group {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin: 12px 0 16px 0;
-      justify-content: center;
-    }
-
-    .role-group label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      color: #333;
-    }
-
-    .role-group input[type="radio"] {
-      accent-color: #3b6abf;
-      width: 14px;
-      height: 14px;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 9px 0;
-      background-color: #3b6abf;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .submit-btn:hover {
-      background-color: #2e55a0;
-    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e6f0fa 0%,#d0e2f0 100%);min-height:100vh;}
+    fieldset{border:2px solid #cde3f0;border-radius:20px;padding:24px 28px;background:white;box-shadow:0 8px 20px rgba(0,0,0,0.05);margin-bottom:24px;}
+    legend{background:#1a3c5c;color:white;padding:8px 22px;border-radius:40px;font-weight:bold;font-size:1.05rem;}
+    input[type="text"],input[type="email"],input[type="password"],select{padding:10px 15px;border:2px solid #d4e4ef;border-radius:25px;font-size:0.95rem;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;width:100%;transition:all 0.3s ease;background:white;color:#1a3c5c;}
+    input:focus,select:focus{outline:none;border-color:#2c7da0;box-shadow:0 0 0 3px rgba(44,125,160,0.12);}
+    label{display:block;font-weight:600;color:#1a3c5c;margin-bottom:6px;font-size:0.9rem;}
+    .form-group{margin-bottom:16px;}
+    button{background:#2c7da0;color:white;border:none;padding:10px 26px;border-radius:40px;font-size:0.92rem;font-weight:600;cursor:pointer;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;transition:all 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    button:hover{background:#1a5a7a;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.12);}
+    .tab-switcher{display:flex;border:2px solid #1a3c5c;border-radius:40px;overflow:hidden;margin-bottom:22px;}
+    .tab-btn{flex:1;padding:10px 0;background:white;color:#1a3c5c;border:none;font-size:0.95rem;font-weight:600;cursor:pointer;border-radius:0;box-shadow:none;transform:none;transition:all 0.2s ease;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    .tab-btn:hover{background:#e6f0fa;transform:none;box-shadow:none;}
+    .tab-btn.active{background:#1a3c5c;color:white;}
+    .role-group{display:flex;gap:24px;align-items:center;margin:14px 0;}
+    .role-group label{display:flex;align-items:center;gap:8px;font-weight:600;color:#1a3c5c;cursor:pointer;margin-bottom:0;}
+    .role-group input[type="radio"]{width:16px;height:16px;accent-color:#2c7da0;cursor:pointer;}
+    .auth-center{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:30px 20px;}
+    .auth-box{width:100%;max-width:420px;}
+    .auth-box fieldset{padding:28px 32px;}
+    .alert{padding:12px 18px;border-radius:12px;font-size:0.9rem;font-weight:600;margin-bottom:16px;display:none;}
+    .alert-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
+    .alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+    p{color:#2c5a7a;margin-top:6px;}
   </style>
 </head>
 <body>
-
-  <div class="card">
-    <div class="card-header">Login / Sign up</div>
-
-    <!-- Tab Switcher -->
-    <div class="tab-switcher">
-      <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
-      <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <div class="form-section active" id="loginForm">
-      <div class="form-group">
-        <label for="login_username">Username / Email</label>
-        <input type="text" id="login_username" name="username" />
+  <div class="auth-center">
+    <div class="auth-box">
+      <div style="text-align:center;margin-bottom:20px;">
+        <h1 style="color:#1a3c5c;font-size:1.8rem;">🩺 MediCare Connect</h1>
+        <p style="color:#2c7da0;margin-top:4px;">Online Doctor Appointment System</p>
       </div>
-      <div class="form-group">
-        <label for="login_password">Password</label>
-        <input type="password" id="login_password" name="password" />
-      </div>
-      <div class="role-group">
-        <label>
-          <input type="radio" name="login_role" value="patient" checked />
-          Patient
-        </label>
-        <label>
-          <input type="radio" name="login_role" value="doctor" />
-          Doctor
-        </label>
-      </div>
-      <button class="submit-btn" onclick="handleLogin()">Login</button>
-    </div>
-
-    <!-- SIGNUP FORM -->
-    <div class="form-section" id="signupForm">
-      <div class="form-group">
-        <label for="signup_username">Username / Email</label>
-        <input type="text" id="signup_username" name="username" />
-      </div>
-      <div class="form-group">
-        <label for="signup_password">Password</label>
-        <input type="password" id="signup_password" name="password" />
-      </div>
-      <div class="form-group">
-        <label for="signup_confirm">Confirm Password</label>
-        <input type="password" id="signup_confirm" name="confirm_password" />
-      </div>
-      <div class="role-group">
-        <label>
-          <input type="radio" name="signup_role" value="patient" checked />
-          Patient
-        </label>
-        <label>
-          <input type="radio" name="signup_role" value="doctor" />
-          Doctor
-        </label>
-      </div>
-      <button class="submit-btn" onclick="handleSignup()">Sign Up</button>
+      <fieldset>
+        <legend>Login / Sign up</legend>
+        <div id="alertBox" class="alert"></div>
+        <div class="tab-switcher" style="margin-top:16px;">
+          <button class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
+          <button class="tab-btn" id="signupTabBtn" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+        <!-- LOGIN -->
+        <div id="loginSection">
+          <div class="form-group">
+            <label for="login_email">Username / Email</label>
+            <input type="email" id="login_email" placeholder="Enter your email" />
+          </div>
+          <div class="form-group">
+            <label for="login_password">Password</label>
+            <input type="password" id="login_password" placeholder="Enter your password" />
+          </div>
+          <div class="role-group">
+            <label><input type="radio" name="login_role" value="patient" checked /> Patient</label>
+            <label><input type="radio" name="login_role" value="doctor" /> Doctor</label>
+          </div>
+          <button onclick="handleLogin()" style="width:100%;margin-top:8px;">Login</button>
+        </div>
+        <!-- SIGNUP -->
+        <div id="signupSection" style="display:none;">
+          <div class="form-group">
+            <label for="signup_username">Username / Email</label>
+            <input type="email" id="signup_username" placeholder="Enter your email" />
+          </div>
+          <div class="form-group">
+            <label for="signup_password">Password</label>
+            <input type="password" id="signup_password" placeholder="Create a password" />
+          </div>
+          <div class="form-group">
+            <label for="signup_confirm">Confirm Password</label>
+            <input type="password" id="signup_confirm" placeholder="Repeat your password" />
+          </div>
+          <div class="role-group">
+            <label><input type="radio" name="signup_role" value="patient" checked /> Patient</label>
+            <label><input type="radio" name="signup_role" value="doctor" /> Doctor</label>
+          </div>
+          <button onclick="handleSignup()" style="width:100%;margin-top:8px;">Sign Up</button>
+        </div>
+      </fieldset>
     </div>
   </div>
-
   <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('signup') === 'success') { showAlert('Signup successful! Please log in.','success'); switchTab('login'); }
     function switchTab(tab) {
-      const loginTabBtn = document.getElementById('loginTabBtn');
-      const signupTabBtn = document.getElementById('signupTabBtn');
-      const loginForm = document.getElementById('loginForm');
-      const signupForm = document.getElementById('signupForm');
-
-      if (tab === 'login') {
-        loginTabBtn.classList.add('active');
-        signupTabBtn.classList.remove('active');
-        loginForm.classList.add('active');
-        signupForm.classList.remove('active');
-      } else {
-        signupTabBtn.classList.add('active');
-        loginTabBtn.classList.remove('active');
-        signupForm.classList.add('active');
-        loginForm.classList.remove('active');
-      }
+      document.getElementById('loginTabBtn').classList.toggle('active', tab==='login');
+      document.getElementById('signupTabBtn').classList.toggle('active', tab==='signup');
+      document.getElementById('loginSection').style.display = tab==='login'?'block':'none';
+      document.getElementById('signupSection').style.display = tab==='signup'?'block':'none';
+      hideAlert();
     }
-
+    function showAlert(msg,type){ const b=document.getElementById('alertBox'); b.className='alert alert-'+type; b.textContent=msg; b.style.display='block'; }
+    function hideAlert(){ document.getElementById('alertBox').style.display='none'; }
     function handleLogin() {
-      const role = document.querySelector('input[name="login_role"]:checked').value;
-      const username = document.getElementById('login_username').value;
-      const password = document.getElementById('login_password').value;
-
-      if (!username || !password) {
-        alert('Please fill in all fields.');
-        return;
-      }
-
-      // Redirect based on role
-      if (role === 'patient') {
-        // window.location.href = 'patient_dashboard.php';
-        alert('Logging in as Patient...');
-      } else {
-        // window.location.href = 'doctor_dashboard.php';
-        alert('Logging in as Doctor...');
-      }
+      const email=document.getElementById('login_email').value.trim();
+      const pass=document.getElementById('login_password').value.trim();
+      const role=document.querySelector('input[name="login_role"]:checked').value;
+      if (!email||!pass){ showAlert('Please fill in all fields.','error'); return; }
+      window.location.href = role==='patient' ? 'find_doctor.html' : 'doctor_dashboard.html';
     }
-
     function handleSignup() {
-      const role = document.querySelector('input[name="signup_role"]:checked').value;
-      const username = document.getElementById('signup_username').value;
-      const password = document.getElementById('signup_password').value;
-      const confirm = document.getElementById('signup_confirm').value;
-
-      if (!username || !password || !confirm) {
-        alert('Please fill in all fields.');
-        return;
-      }
-
-      if (password !== confirm) {
-        alert('Passwords do not match!');
-        return;
-      }
-
-      // Redirect based on role
-      if (role === 'patient') {
-        // window.location.href = 'patient_dashboard.php';
-        alert('Signing up as Patient...');
-      } else {
-        // window.location.href = 'doctor_dashboard.php';
-        alert('Signing up as Doctor...');
-      }
+      const email=document.getElementById('signup_username').value.trim();
+      const pass=document.getElementById('signup_password').value.trim();
+      const confirm=document.getElementById('signup_confirm').value.trim();
+      const role=document.querySelector('input[name="signup_role"]:checked').value;
+      if (!email||!pass||!confirm){ showAlert('Please fill in all fields.','error'); return; }
+      if (pass!==confirm){ showAlert('Passwords do not match!','error'); return; }
+      window.location.href = role==='doctor' ? 'doctor_register.html' : 'login_signup.html?signup=success';
     }
   </script>
-
 </body>
 </html>
