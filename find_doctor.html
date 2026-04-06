@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find a Doctor — MediCare Connect</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e6f0fa 0%,#d0e2f0 100%);min-height:100vh;}
+    .navbar{background:white;box-shadow:0 4px 12px rgba(0,0,0,0.08);padding:14px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;border-bottom:2px solid #cde3f0;}
+    .navbar .brand{color:#1a3c5c;font-size:1.3rem;font-weight:700;text-decoration:none;}
+    .navbar .nav-links a{color:#1a3c5c;text-decoration:none;font-weight:600;padding:8px 16px;border-radius:30px;transition:all 0.3s ease;margin-left:6px;}
+    .navbar .nav-links a:hover{background:#e6f0fa;color:#2c7da0;}
+    .navbar .nav-links a.active{background:#1a3c5c;color:white;}
+    .page-wrapper{max-width:1100px;margin:0 auto;padding:30px 20px;}
+    .page-header{margin-bottom:24px;}
+    .page-header h2{color:#1a3c5c;font-size:1.7rem;margin-bottom:4px;}
+    .page-header p{color:#2c7da0;font-size:0.95rem;margin-top:0;}
+    .filter-bar{display:flex;gap:14px;flex-wrap:wrap;padding:18px 22px;background:white;border:2px solid #cde3f0;border-radius:18px;box-shadow:0 4px 10px rgba(0,0,0,0.05);margin-bottom:24px;}
+    .filter-bar input,.filter-bar select{flex:1;min-width:200px;}
+    input[type="text"],select{padding:10px 15px;border:2px solid #d4e4ef;border-radius:25px;font-size:0.95rem;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;width:100%;transition:all 0.3s ease;background:white;color:#1a3c5c;}
+    input:focus,select:focus{outline:none;border-color:#2c7da0;box-shadow:0 0 0 3px rgba(44,125,160,0.12);}
+    button{background:#2c7da0;color:white;border:none;padding:10px 26px;border-radius:40px;font-size:0.92rem;font-weight:600;cursor:pointer;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;transition:all 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    button:hover{background:#1a5a7a;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.12);}
+    .doctor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:20px;}
+    .doctor-card{background:white;border:2px solid #cde3f0;border-radius:18px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:all 0.3s ease;}
+    .doctor-card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.1);border-color:#2c7da0;}
+    .doctor-card h3{color:#1a3c5c;font-size:1.05rem;margin-bottom:8px;}
+    .doctor-card p{color:#2c7da0;font-size:0.88rem;margin-top:5px;}
+    .doctor-card .badge{display:inline-block;background:#e6f0fa;color:#1a3c5c;padding:3px 12px;border-radius:20px;font-size:0.78rem;font-weight:600;margin-bottom:10px;}
+    .footer{text-align:center;padding:20px;color:#2c7da0;font-weight:500;font-size:0.88rem;border-top:2px solid #cde3f0;background:white;margin-top:30px;}
+    p{color:#2c5a7a;margin-top:6px;}
+    @media(max-width:768px){.navbar{flex-direction:column;gap:10px;padding:12px 16px;}.navbar .nav-links{display:flex;flex-wrap:wrap;justify-content:center;}.filter-bar{flex-direction:column;}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="find_doctor.html" class="brand">🩺 MediCare Connect</a>
+    <div class="nav-links">
+      <a href="find_doctor.html" class="active">Find Doctor</a>
+      <a href="login_signup.html">Logout</a>
+    </div>
+  </nav>
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h2>Find a Doctor</h2>
+      <p>Browse specialists and book appointments with ease.</p>
+    </div>
+    <div class="filter-bar">
+      <input type="text" id="search" placeholder="Search doctor by name..." style="flex:1;min-width:200px;" />
+      <select id="specializationFilter" style="flex:1;min-width:200px;">
+        <option value="">All Specializations</option>
+        <option>Cardiologist</option>
+        <option>Dermatologist</option>
+        <option>Dentist</option>
+        <option>Neurologist</option>
+        <option>Pediatrician</option>
+        <option>Gynecologist</option>
+        <option>Orthopedic</option>
+      </select>
+    </div>
+    <div class="doctor-grid" id="doctorGrid">
+      <div class="doctor-card" data-name="dr. asha sharma" data-spec="cardiologist">
+        <span class="badge">Available Today</span>
+        <h3>Dr. Asha Sharma</h3>
+        <p><strong style="color:#1a3c5c;">Specialization:</strong> Cardiologist</p>
+        <p><strong style="color:#1a3c5c;">Experience:</strong> 10 Years</p>
+        <p><strong style="color:#1a3c5c;">Availability:</strong> Sun–Mon, 9AM–11AM</p>
+        <a href="book_appointment.html?doctor=Dr.%20Asha%20Sharma&spec=Cardiologist">
+          <button style="margin-top:14px;width:100%;">Book Appointment</button>
+        </a>
+      </div>
+      <div class="doctor-card" data-name="dr. raj shrestha" data-spec="dermatologist">
+        <span class="badge">Top Rated</span>
+        <h3>Dr. Raj Shrestha</h3>
+        <p><strong style="color:#1a3c5c;">Specialization:</strong> Dermatologist</p>
+        <p><strong style="color:#1a3c5c;">Experience:</strong> 7 Years</p>
+        <p><strong style="color:#1a3c5c;">Availability:</strong> Mon–Tue, 10AM–12PM</p>
+        <a href="book_appointment.html?doctor=Dr.%20Raj%20Shrestha&spec=Dermatologist">
+          <button style="margin-top:14px;width:100%;">Book Appointment</button>
+        </a>
+      </div>
+      <div class="doctor-card" data-name="dr. sunil adhikari" data-spec="pediatrician">
+        <span class="badge">Popular</span>
+        <h3>Dr. Sunil Adhikari</h3>
+        <p><strong style="color:#1a3c5c;">Specialization:</strong> Pediatrician</p>
+        <p><strong style="color:#1a3c5c;">Experience:</strong> 8 Years</p>
+        <p><strong style="color:#1a3c5c;">Availability:</strong> Sun–Mon, 2PM–4PM</p>
+        <a href="book_appointment.html?doctor=Dr.%20Sunil%20Adhikari&spec=Pediatrician">
+          <button style="margin-top:14px;width:100%;">Book Appointment</button>
+        </a>
+      </div>
+      <div class="doctor-card" data-name="dr. neha thapa" data-spec="gynecologist">
+        <span class="badge">Recommended</span>
+        <h3>Dr. Neha Thapa</h3>
+        <p><strong style="color:#1a3c5c;">Specialization:</strong> Gynecologist</p>
+        <p><strong style="color:#1a3c5c;">Experience:</strong> 6 Years</p>
+        <p><strong style="color:#1a3c5c;">Availability:</strong> Mon–Fri, 10AM–2PM</p>
+        <a href="book_appointment.html?doctor=Dr.%20Neha%20Thapa&spec=Gynecologist">
+          <button style="margin-top:14px;width:100%;">Book Appointment</button>
+        </a>
+      </div>
+    </div>
+    <p id="noResults" style="display:none;text-align:center;margin-top:30px;font-size:1rem;">No doctors found matching your search.</p>
+  </div>
+  <footer class="footer">&copy; 2026 MediCare Connect — Online Doctor Appointment System</footer>
+  <script>
+    const searchInput=document.getElementById('search');
+    const specFilter=document.getElementById('specializationFilter');
+    const cards=document.querySelectorAll('.doctor-card');
+    const noResults=document.getElementById('noResults');
+    function filterDoctors(){
+      const s=searchInput.value.toLowerCase();
+      const sp=specFilter.value.toLowerCase();
+      let visible=0;
+      cards.forEach(card=>{
+        const show=card.dataset.name.includes(s)&&(!sp||card.dataset.spec===sp);
+        card.style.display=show?'block':'none';
+        if(show)visible++;
+      });
+      noResults.style.display=visible===0?'block':'none';
+    }
+    searchInput.addEventListener('input',filterDoctors);
+    specFilter.addEventListener('change',filterDoctors);
+  </script>
+</body>
+</html>
