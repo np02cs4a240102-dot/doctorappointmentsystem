@@ -101,6 +101,10 @@
       const pass=document.getElementById('login_password').value.trim();
       const role=document.querySelector('input[name="login_role"]:checked').value;
       if (!email||!pass){ showAlert('Please fill in all fields.','error'); return; }
+
+      // Store patient email for booking (NO UI change)
+      if(role==='patient'){ localStorage.setItem('patientEmail', email); }
+
       window.location.href = role==='patient' ? 'find_doctor.html' : 'doctor_dashboard.html';
     }
     function handleSignup() {

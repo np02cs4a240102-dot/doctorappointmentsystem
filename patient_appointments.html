@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Appointments — MediCare Connect</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e6f0fa 0%,#d0e2f0 100%);min-height:100vh;}
+    .navbar{background:white;box-shadow:0 4px 12px rgba(0,0,0,0.08);padding:14px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;border-bottom:2px solid #cde3f0;}
+    .navbar .brand{color:#1a3c5c;font-size:1.3rem;font-weight:700;text-decoration:none;}
+    .navbar .nav-links a{color:#1a3c5c;text-decoration:none;font-weight:600;padding:8px 16px;border-radius:30px;transition:all 0.3s ease;margin-left:6px;}
+    .navbar .nav-links a:hover{background:#e6f0fa;color:#2c7da0;}
+    .page-wrapper{max-width:1100px;margin:0 auto;padding:30px 20px;}
+    .page-header{margin-bottom:24px;}
+    .page-header h2{color:#1a3c5c;font-size:1.7rem;margin-bottom:4px;}
+    .page-header p{color:#2c7da0;font-size:0.95rem;margin-top:0;}
+
+    .card{background:white;border:2px solid #cde3f0;border-radius:18px;padding:18px 20px;box-shadow:0 4px 12px rgba(0,0,0,0.06);margin-bottom:14px;}
+    .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .muted{color:#2c7da0;font-size:0.9rem;}
+    .badge{display:inline-block;background:#e6f0fa;color:#1a3c5c;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+    .badge.booked{background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
+    .badge.cancelled{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+
+    button{background:#2c7da0;color:white;border:none;padding:8px 18px;border-radius:40px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;transition:all 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    button:hover{background:#1a5a7a;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.12);}
+    .btn-secondary{background:#7f8c8d;} .btn-secondary:hover{background:#5d6d7e;}
+    .btn-danger{background:#7f8c8d;} .btn-danger:hover{background:#5d6d7e;}
+
+    .alert{padding:12px 18px;border-radius:12px;font-size:0.9rem;font-weight:600;margin-bottom:16px;display:none;}
+    .alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+    .footer{text-align:center;padding:20px;color:#2c7da0;font-weight:500;font-size:0.88rem;border-top:2px solid #cde3f0;background:white;margin-top:30px;}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="find_doctor.html" class="brand">🩺 MediCare Connect</a>
+    <div class="nav-links">
+      <a href="find_doctor.html">Find Doctor</a>
+      <a href="login_signup.html">Logout</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h2>My Appointments</h2>
+      <p>View your appointment status and details.</p>
+    </div>
+
+    <div id="alertBox" class="alert alert-error"></div>
+    <div id="list"></div>
+
+    <div style="margin-top:14px;">
+      <button onclick="loadAppointments()">Refresh</button>
+      <button class="btn-secondary" onclick="window.location.href='find_doctor.html'">Back</button>
+    </div>
+  </div>
+
+  <footer class="footer">&copy; 2026 MediCare Connect — Online Doctor Appointment System</footer>
+
+  <script>
+    function showError(msg){
+      const a=document.getElementById('alertBox');
+      a.textContent=msg;
+      a.style.display='block';
+    }
+    function hideError(){ document.getElementById('alertBox').style.display='none'; }
+
+    async function loadAppointments(){
+      hideError();
+      const patientEmail = localStorage.getItem('patientEmail');
+      if(!patientEmail){
+        showError('Please login as patient to view your appointments.');
+        return;
+      }
+
+      try{
+        const res = await fetch('backend/get_patient_appointments.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ patientEmail })
+        });
+        const data = await res.json();
+        if(!res.ok || !data.ok){
+          showError((data && data.message) ? data.message : 'Failed to load appointments.');
+          return;
+        }
+
+        const list = document.getElementById('list');
+        list.innerHTML = '';
+
+        if(!data.appointments || data.appointments.length === 0){
+          list.innerHTML = `<p class="muted">No appointments found.</p>`;
+          return;
+        }
+
+        data.appointments.forEach(appt=>{
+          const status = appt.status || 'BOOKED';
+          const badgeClass = status === 'CANCELLED' ? 'cancelled' : 'booked';
+
+          list.innerHTML += `
+            <div class="card">
+              <div class="row">
+                <div>
+                  <div style="color:#1a3c5c;font-weight:800;">${appt.doctor_name}</div>
+                  <div class="muted">Specialization: ${appt.specialization || '-'}</div>
+                  <div class="muted">Date: ${appt.appointment_date}</div>
+                  <div class="muted">Time: ${appt.time_slot}</div>
+                  <div class="muted">ID: ${appt.id}</div>
+                </div>
+                <div style="text-align:right;">
+                  <span class="badge ${badgeClass}">${status}</span>
+                  <div style="margin-top:10px; display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;">
+                    <button onclick="rescheduleAppt(${appt.id})">Reschedule</button>
+                    <button onclick="cancelAppt(${appt.id})">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }catch(e){
+        showError('Network/server error. Please try again.');
+      }
+    }
+
+    async function cancelAppt(id){
+      if(!confirm('Cancel this appointment?')) return;
+      try{
+        const res = await fetch('backend/cancel_appointment.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ appointmentId: id })
+        });
+        const data = await res.json();
+        if(!res.ok || !data.ok){
+          alert((data && data.message) ? data.message : 'Cancellation failed.');
+          return;
+        }
+        loadAppointments();
+      }catch(e){
+        alert('Network/server error.');
+      }
+    }
+
+    async function rescheduleAppt(id){
+      // Minimal UI: prompt for new values
+      const newDate = prompt('Enter new date (YYYY-MM-DD):');
+      if(!newDate) return;
+
+      const newTimeSlot = prompt('Enter new time slot (e.g. 9:00 AM, 10:00 AM, 2:00 PM):');
+      if(!newTimeSlot) return;
+
+      try{
+        const res = await fetch('backend/reschedule_appointment.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ appointmentId: id, newDate: newDate.trim(), newTimeSlot: newTimeSlot.trim() })
+        });
+        const data = await res.json();
+        if(!res.ok || !data.ok){
+          alert((data && data.message) ? data.message : 'Reschedule failed.');
+          return;
+        }
+        alert('Rescheduled successfully.');
+        loadAppointments();
+      }catch(e){
+        alert('Network/server error.');
+      }
+    }
+
+    loadAppointments();
+  </script>
+</body>
+</html>

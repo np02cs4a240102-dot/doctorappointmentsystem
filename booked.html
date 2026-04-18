@@ -30,6 +30,7 @@
     <a href="find_doctor.html" class="brand">🩺 MediCare Connect</a>
     <div class="nav-links">
       <a href="find_doctor.html">Find Doctor</a>
+      <a href="patient_appointments.html">My Appointments</a>
       <a href="login_signup.html">Logout</a>
     </div>
   </nav>
@@ -53,9 +54,13 @@
     const doctor=params.get('doctor')||'your doctor';
     const date=params.get('date')||'';
     const slot=params.get('slot')||'';
+    const id=params.get('id')||'';
+
     let info=`Your appointment with <strong>${doctor}</strong> has been confirmed.`;
     if(date) info+=`<br>📅 Date: <strong>${date}</strong>`;
     if(slot) info+=`<br>⏰ Time: <strong>${slot}</strong>`;
+    if(id) info+=`<br>Confirmation ID: <strong>${id}</strong>`;
+
     document.getElementById('bookingInfo').innerHTML=info;
   </script>
 </body>

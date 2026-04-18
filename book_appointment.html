@@ -36,6 +36,7 @@
     <a href="find_doctor.html" class="brand">🩺 MediCare Connect</a>
     <div class="nav-links">
       <a href="find_doctor.html">Find Doctor</a>
+      <a href="patient_appointments.html">My Appointments</a>
       <a href="login_signup.html">Logout</a>
     </div>
   </nav>
@@ -84,17 +85,54 @@
     document.getElementById('apptDate').min=new Date().toISOString().split('T')[0];
     const params=new URLSearchParams(window.location.search);
     const doctorParam=params.get('doctor');
+    const specParam=params.get('spec')||'';
     if(doctorParam){
       const sel=document.getElementById('doctorSelect');
       for(let opt of sel.options){ if(opt.value===doctorParam){opt.selected=true;break;} }
     }
     function showAlert(msg,type){ const b=document.getElementById('alertBox'); b.className='alert alert-'+type; b.textContent=msg; b.style.display='block'; }
-    function confirmBooking(){
+
+    async function confirmBooking(){
       const doctor=document.getElementById('doctorSelect').value;
       const date=document.getElementById('apptDate').value;
       const slot=document.getElementById('timeSlot').value;
+
       if(!doctor||!date||!slot){ showAlert('Please fill in all fields before confirming.','error'); return; }
-      window.location.href='booked.html?doctor='+encodeURIComponent(doctor)+'&date='+encodeURIComponent(date)+'&slot='+encodeURIComponent(slot);
+
+      const patientEmail = localStorage.getItem('patientEmail');
+      if(!patientEmail){
+        showAlert('Please login as patient before booking.','error');
+        return;
+      }
+
+      try{
+        const res = await fetch('backend/book_appointment.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            patientEmail: patientEmail,
+            doctorName: doctor,
+            specialization: specParam,
+            date: date,
+            timeSlot: slot
+          })
+        });
+
+        const data = await res.json();
+        if(!res.ok || !data.ok){
+          showAlert((data && data.message) ? data.message : 'Booking failed.','error');
+          return;
+        }
+
+        const c = data.confirmation;
+        window.location.href='booked.html?doctor='+encodeURIComponent(c.doctorName)+
+          '&date='+encodeURIComponent(c.date)+
+          '&slot='+encodeURIComponent(c.timeSlot)+
+          '&id='+encodeURIComponent(c.appointmentId);
+
+      }catch(e){
+        showAlert('Network/server error. Please try again.','error');
+      }
     }
   </script>
 </body>
