@@ -83,7 +83,3 @@ CREATE TABLE IF NOT EXISTS appointments (
   INDEX idx_status (status)
 );
 
--- NOTE:
--- No UNIQUE constraint on (doctor_name, appointment_date, time_slot)
--- because cancelled appointments remain in history.
--- Backend prevents double booking by checking only status='BOOKED'.
