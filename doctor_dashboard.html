@@ -76,7 +76,6 @@
         </table>
       </div>
       
-      <!-- Reschedule Panel -->
       <div id="reschedulePanel" style="display:none;margin-top:20px;background:#f0f6fc;border:2px solid #cde3f0;border-radius:14px;padding:18px;">
         <p style="margin-bottom:12px;"><strong>Reschedule appointment for: <span id="reschedulePatient"></span></strong></p>
         <div class="form-row">
@@ -87,8 +86,8 @@
           <div class="form-group">
             <label for="newSlot">New Time Slot</label>
             <select id="newSlot">
-              <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
-              <option>02:00 PM</option><option>03:00 PM</option><option>04:00 PM</option>
+              <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+              <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
             </select>
           </div>
           <div class="form-group" style="align-self:flex-end;">
@@ -99,13 +98,21 @@
       </div>
       
       <div style="text-align:right;margin-top:14px;">
-        <button onclick="window.location.href='doctor_availability.html'" style="padding:8px 20px;font-size:0.85rem;">➕ Set Availability</button>
+        <button onclick="window.location.href='doctor_register.html'" style="padding:8px 20px;font-size:0.85rem;">➕ Set Availability</button>
       </div>
     </fieldset>
   </div>
   <footer class="footer">&copy; 2026 MediCare Connect — Online Doctor Appointment System</footer>
   
   <script>
+    const doctorId = localStorage.getItem('doctorId');
+    const doctorName = localStorage.getItem('doctorName');
+    
+    if (!doctorId) {
+        alert('Please login as doctor first');
+        window.location.href = 'login_signup.html';
+    }
+    
     const params = new URLSearchParams(window.location.search);
     if(params.get('registered') === 'success'){
       const b = document.getElementById('regAlert'); 
@@ -118,10 +125,9 @@
     let activeRow = null;
     let activeAppointmentId = null;
     
-    // Load appointments
     async function loadAppointments() {
         try {
-            const response = await fetch('doctor_backend/get_appointments.php');
+            const response = await fetch('doctor_backend/get_appointments.php?doctor_id=' + doctorId);
             const data = await response.json();
             
             const tbody = document.getElementById('appointmentBody');
@@ -132,10 +138,10 @@
                     const row = tbody.insertRow();
                     row.dataset.id = apt.id;
                     row.innerHTML = `
-                        <td>${apt.patient_name}</td>
+                        <td>${apt.patient_name || apt.patient_email || 'N/A'}</td>
                         <td>${apt.appointment_date}</td>
                         <td>${apt.appointment_time}</td>
-                        <td>${apt.reason}</td>
+                        <td>${apt.reason || '-'}</td>
                         <td>
                             <div style="display:flex;gap:6px;flex-wrap:wrap;">
                                 <button onclick="openReschedule(this)" style="padding:6px 14px;font-size:0.8rem;">Reschedule</button>
@@ -176,22 +182,15 @@
             return;
         }
         
-        // Convert time format
-        const timeMap = {
-            '09:00 AM': '09:00:00', '10:00 AM': '10:00:00', '11:00 AM': '11:00:00',
-            '02:00 PM': '14:00:00', '03:00 PM': '15:00:00', '04:00 PM': '16:00:00'
-        };
-        const newTime = timeMap[newTimeSlot] || '09:00:00';
-        
         try {
-            const response = await fetch('update_appointment.php', {
+            const response = await fetch('doctor_backend/update_appointment.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     action: 'reschedule',
                     appointment_id: activeAppointmentId,
                     new_date: newDate,
-                    new_time: newTime
+                    new_time_slot: newTimeSlot
                 })
             });
             
@@ -202,7 +201,7 @@
                 closeReschedule();
                 loadAppointments();
             } else {
-                alert('Failed to reschedule: ' + data.error);
+                alert('Failed to reschedule: ' + (data.error || 'Unknown error'));
             }
         } catch (error) {
             alert('Network error. Please try again.');
@@ -216,7 +215,7 @@
         const appointmentId = row.dataset.id;
         
         try {
-            const response = await fetch('update_appointment.php', {
+            const response = await fetch('doctor_backend/update_appointment.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -231,14 +230,13 @@
                 row.remove();
                 alert('Appointment cancelled');
             } else {
-                alert('Failed to cancel: ' + data.error);
+                alert('Failed to cancel: ' + (data.error || 'Unknown error'));
             }
         } catch (error) {
             alert('Network error. Please try again.');
         }
     }
     
-    // Load appointments on page load
     document.addEventListener('DOMContentLoaded', loadAppointments);
   </script>
 </body>

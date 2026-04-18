@@ -1,7 +1,18 @@
 <?php
 require_once 'config.php';
 
-$doctor_id = $_SESSION['doctor_id'];
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") { exit; }
+
+$doctor_id = intval($_GET['doctor_id'] ?? $_POST['doctor_id'] ?? 0);
+
+if ($doctor_id <= 0) {
+    echo json_encode(['success' => false, 'error' => 'Doctor ID required']);
+    exit;
+}
 
 try {
     $stmt = $pdo->prepare("
