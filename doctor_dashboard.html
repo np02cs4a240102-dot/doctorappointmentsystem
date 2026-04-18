@@ -71,37 +71,11 @@
             </tr>
           </thead>
           <tbody id="appointmentBody">
-            <tr>
-              <td>Niru M.</td><td>04/07/2026</td><td>10:30 AM</td><td>Follow-up</td>
-              <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="openReschedule(this)" style="padding:6px 14px;font-size:0.8rem;">Reschedule</button>
-                <button onclick="cancelRow(this)" class="btn-danger" style="padding:6px 14px;font-size:0.8rem;">Cancel</button>
-              </div></td>
-            </tr>
-            <tr>
-              <td>Rahul S.</td><td>04/08/2026</td><td>11:30 AM</td><td>Follow-up</td>
-              <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="openReschedule(this)" style="padding:6px 14px;font-size:0.8rem;">Reschedule</button>
-                <button onclick="cancelRow(this)" class="btn-danger" style="padding:6px 14px;font-size:0.8rem;">Cancel</button>
-              </div></td>
-            </tr>
-            <tr>
-              <td>Amit P.</td><td>04/09/2026</td><td>12:00 PM</td><td>Follow-up</td>
-              <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="openReschedule(this)" style="padding:6px 14px;font-size:0.8rem;">Reschedule</button>
-                <button onclick="cancelRow(this)" class="btn-danger" style="padding:6px 14px;font-size:0.8rem;">Cancel</button>
-              </div></td>
-            </tr>
-            <tr>
-              <td>Priya K.</td><td>04/05/2026</td><td>9:30 AM</td><td>Consultation</td>
-              <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="openReschedule(this)" style="padding:6px 14px;font-size:0.8rem;">Reschedule</button>
-                <button onclick="cancelRow(this)" class="btn-danger" style="padding:6px 14px;font-size:0.8rem;">Cancel</button>
-              </div></td>
-            </tr>
+            <tr><td colspan="5" style="text-align:center;">Loading appointments...</td></tr>
           </tbody>
         </table>
       </div>
+      
       <!-- Reschedule Panel -->
       <div id="reschedulePanel" style="display:none;margin-top:20px;background:#f0f6fc;border:2px solid #cde3f0;border-radius:14px;padding:18px;">
         <p style="margin-bottom:12px;"><strong>Reschedule appointment for: <span id="reschedulePatient"></span></strong></p>
@@ -113,8 +87,8 @@
           <div class="form-group">
             <label for="newSlot">New Time Slot</label>
             <select id="newSlot">
-              <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
-              <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+              <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+              <option>02:00 PM</option><option>03:00 PM</option><option>04:00 PM</option>
             </select>
           </div>
           <div class="form-group" style="align-self:flex-end;">
@@ -123,35 +97,149 @@
           </div>
         </div>
       </div>
+      
       <div style="text-align:right;margin-top:14px;">
         <button onclick="window.location.href='doctor_availability.html'" style="padding:8px 20px;font-size:0.85rem;">➕ Set Availability</button>
       </div>
     </fieldset>
   </div>
   <footer class="footer">&copy; 2026 MediCare Connect — Online Doctor Appointment System</footer>
+  
   <script>
-    const params=new URLSearchParams(window.location.search);
-    if(params.get('registered')==='success'){
-      const b=document.getElementById('regAlert'); b.textContent='Registration successful! Welcome to your dashboard.'; b.style.display='block';
-      setTimeout(()=>b.style.display='none',4000);
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('registered') === 'success'){
+      const b = document.getElementById('regAlert'); 
+      b.textContent = 'Registration successful! Welcome to your dashboard.'; 
+      b.style.display = 'block';
+      setTimeout(() => b.style.display = 'none', 4000);
     }
-    document.getElementById('newDate').min=new Date().toISOString().split('T')[0];
-    let activeRow=null;
-    function openReschedule(btn){
-      activeRow=btn.closest('tr');
-      document.getElementById('reschedulePatient').textContent=activeRow.cells[0].textContent;
-      document.getElementById('reschedulePanel').style.display='block';
-      document.getElementById('reschedulePanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+    
+    document.getElementById('newDate').min = new Date().toISOString().split('T')[0];
+    let activeRow = null;
+    let activeAppointmentId = null;
+    
+    // Load appointments
+    async function loadAppointments() {
+        try {
+            const response = await fetch('doctor_backend/get_appointments.php');
+            const data = await response.json();
+            
+            const tbody = document.getElementById('appointmentBody');
+            
+            if (data.success && data.appointments.length > 0) {
+                tbody.innerHTML = '';
+                data.appointments.forEach(apt => {
+                    const row = tbody.insertRow();
+                    row.dataset.id = apt.id;
+                    row.innerHTML = `
+                        <td>${apt.patient_name}</td>
+                        <td>${apt.appointment_date}</td>
+                        <td>${apt.appointment_time}</td>
+                        <td>${apt.reason}</td>
+                        <td>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                <button onclick="openReschedule(this)" style="padding:6px 14px;font-size:0.8rem;">Reschedule</button>
+                                <button onclick="cancelAppointment(this)" class="btn-danger" style="padding:6px 14px;font-size:0.8rem;">Cancel</button>
+                            </div>
+                        </td>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No appointments found</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error loading appointments:', error);
+            document.getElementById('appointmentBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:red;">Failed to load appointments</td></tr>';
+        }
     }
-    function closeReschedule(){ document.getElementById('reschedulePanel').style.display='none'; activeRow=null; }
-    function confirmReschedule(){
-      const d=document.getElementById('newDate').value;
-      const s=document.getElementById('newSlot').value;
-      if(!d){alert('Please select a new date.');return;}
-      if(activeRow){activeRow.cells[1].textContent=d;activeRow.cells[2].textContent=s;}
-      closeReschedule();
+    
+    function openReschedule(btn) {
+        activeRow = btn.closest('tr');
+        activeAppointmentId = activeRow.dataset.id;
+        document.getElementById('reschedulePatient').textContent = activeRow.cells[0].textContent;
+        document.getElementById('reschedulePanel').style.display = 'block';
+        document.getElementById('reschedulePanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
     }
-    function cancelRow(btn){ if(confirm('Cancel this appointment?')) btn.closest('tr').remove(); }
+    
+    function closeReschedule() { 
+        document.getElementById('reschedulePanel').style.display = 'none'; 
+        activeRow = null;
+        activeAppointmentId = null;
+    }
+    
+    async function confirmReschedule() {
+        const newDate = document.getElementById('newDate').value;
+        const newTimeSlot = document.getElementById('newSlot').value;
+        
+        if (!newDate) {
+            alert('Please select a new date.');
+            return;
+        }
+        
+        // Convert time format
+        const timeMap = {
+            '09:00 AM': '09:00:00', '10:00 AM': '10:00:00', '11:00 AM': '11:00:00',
+            '02:00 PM': '14:00:00', '03:00 PM': '15:00:00', '04:00 PM': '16:00:00'
+        };
+        const newTime = timeMap[newTimeSlot] || '09:00:00';
+        
+        try {
+            const response = await fetch('update_appointment.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'reschedule',
+                    appointment_id: activeAppointmentId,
+                    new_date: newDate,
+                    new_time: newTime
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Appointment rescheduled successfully!');
+                closeReschedule();
+                loadAppointments();
+            } else {
+                alert('Failed to reschedule: ' + data.error);
+            }
+        } catch (error) {
+            alert('Network error. Please try again.');
+        }
+    }
+    
+    async function cancelAppointment(btn) {
+        if (!confirm('Cancel this appointment?')) return;
+        
+        const row = btn.closest('tr');
+        const appointmentId = row.dataset.id;
+        
+        try {
+            const response = await fetch('update_appointment.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'cancel',
+                    appointment_id: appointmentId
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                row.remove();
+                alert('Appointment cancelled');
+            } else {
+                alert('Failed to cancel: ' + data.error);
+            }
+        } catch (error) {
+            alert('Network error. Please try again.');
+        }
+    }
+    
+    // Load appointments on page load
+    document.addEventListener('DOMContentLoaded', loadAppointments);
   </script>
 </body>
 </html>

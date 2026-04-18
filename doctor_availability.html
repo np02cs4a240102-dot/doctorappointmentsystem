@@ -3,154 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Set Availability — MediCare Connect</title>
+  <title>Doctor Registration — MediCare Connect</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e6f0fa 0%,#d0e2f0 100%);min-height:100vh;}
-    .navbar{background:white;box-shadow:0 4px 12px rgba(0,0,0,0.08);padding:14px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;border-bottom:2px solid #cde3f0;}
-    .navbar .brand{color:#1a3c5c;font-size:1.3rem;font-weight:700;text-decoration:none;}
-    .navbar .nav-links a{color:#1a3c5c;text-decoration:none;font-weight:600;padding:8px 16px;border-radius:30px;transition:all 0.3s ease;margin-left:6px;}
-    .navbar .nav-links a:hover{background:#e6f0fa;color:#2c7da0;}
-    .navbar .nav-links a.active{background:#1a3c5c;color:white;}
-    .page-wrapper{max-width:1100px;margin:0 auto;padding:30px 20px;}
-    .page-header{margin-bottom:24px;}
-    .page-header h2{color:#1a3c5c;font-size:1.7rem;margin-bottom:4px;}
-    .page-header p{color:#2c7da0;font-size:0.95rem;margin-top:0;}
     fieldset{border:2px solid #cde3f0;border-radius:20px;padding:24px 28px;background:white;box-shadow:0 8px 20px rgba(0,0,0,0.05);margin-bottom:24px;}
     legend{background:#1a3c5c;color:white;padding:8px 22px;border-radius:40px;font-weight:bold;font-size:1.05rem;}
-    input[type="time"],select{padding:10px 15px;border:2px solid #d4e4ef;border-radius:25px;font-size:0.95rem;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;width:100%;transition:all 0.3s ease;background:white;color:#1a3c5c;}
+    input[type="text"],input[type="email"],input[type="tel"],input[type="time"],select{padding:10px 15px;border:2px solid #d4e4ef;border-radius:25px;font-size:0.95rem;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;width:100%;transition:all 0.3s ease;background:white;color:#1a3c5c;}
     input:focus,select:focus{outline:none;border-color:#2c7da0;box-shadow:0 0 0 3px rgba(44,125,160,0.12);}
     label{display:block;font-weight:600;color:#1a3c5c;margin-bottom:6px;font-size:0.9rem;}
     .form-group{margin-bottom:16px;}
-    .form-row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
-    .form-row .form-group{flex:1;min-width:140px;}
     button{background:#2c7da0;color:white;border:none;padding:10px 26px;border-radius:40px;font-size:0.92rem;font-weight:600;cursor:pointer;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;transition:all 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
     button:hover{background:#1a5a7a;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.12);}
-    .btn-danger{background:#c0392b;} .btn-danger:hover{background:#96281b;}
     .btn-secondary{background:#7f8c8d;} .btn-secondary:hover{background:#5d6d7e;}
+    .auth-center{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:40px 20px;}
+    .alert{padding:12px 18px;border-radius:12px;font-size:0.9rem;font-weight:600;margin-bottom:16px;display:none;}
+    .alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
+    .alert-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
     .day-checkboxes{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0 16px;}
     .day-checkboxes label{display:flex;align-items:center;gap:6px;font-weight:500;color:#1a3c5c;cursor:pointer;margin-bottom:0;}
     .day-checkboxes input[type="checkbox"]{width:15px;height:15px;accent-color:#2c7da0;}
-    table{border-collapse:collapse;width:100%;}
-    th{background:#1a3c5c;color:white;padding:12px 14px;font-weight:600;text-align:left;}
-    td{padding:12px 14px;border-bottom:1px solid #cde3f0;vertical-align:middle;color:#1a3c5c;}
-    tr:nth-child(even) td{background:#f8fbfe;}
-    tr:hover td{background:#eef4fa;}
-    .table-wrapper{border:2px solid #cde3f0;border-radius:15px;overflow:hidden;}
-    .alert{padding:12px 18px;border-radius:12px;font-size:0.9rem;font-weight:600;margin-bottom:16px;display:none;}
-    .alert-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
-    .alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
-    .footer{text-align:center;padding:20px;color:#2c7da0;font-weight:500;font-size:0.88rem;border-top:2px solid #cde3f0;background:white;margin-top:30px;}
+    .form-row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+    .form-row .form-group{flex:1;min-width:140px;}
     p{color:#2c5a7a;margin-top:6px;}
-    @media(max-width:768px){.navbar{flex-direction:column;gap:10px;padding:12px 16px;}.navbar .nav-links{display:flex;flex-wrap:wrap;justify-content:center;}}
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="doctor_dashboard.html" class="brand">🩺 MediCare Connect</a>
-    <div class="nav-links">
-      <a href="doctor_dashboard.html">Dashboard</a>
-      <a href="doctor_availability.html" class="active">Set Availability</a>
-      <a href="login_signup.html">Logout</a>
+  <div class="auth-center">
+    <div style="width:100%;max-width:520px;">
+      <div style="text-align:center;margin-bottom:20px;">
+        <h1 style="color:#1a3c5c;font-size:1.8rem;">🩺 MediCare Connect</h1>
+        <p style="color:#2c7da0;margin-top:4px;">Doctor Registration</p>
+      </div>
+      <fieldset>
+        <legend>Doctor Registration</legend>
+        <div id="alertBox" class="alert"></div>
+        <p style="margin-bottom:16px;font-size:0.9rem;">Please complete your profile to get started.</p>
+        
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="doc_name">Name</label>
+            <input type="text" id="doc_name" name="name" placeholder="Full name e.g. Dr. Asha Sharma" />
+          </div>
+          <div class="form-group">
+            <label for="doc_email">Email</label>
+            <input type="email" id="doc_email" name="email" placeholder="Your email address" />
+          </div>
+          <div class="form-group">
+            <label for="doc_spec">Specialization</label>
+            <select id="doc_spec" name="specialization">
+              <option value="">— Select Specialization —</option>
+              <option>Cardiologist</option>
+              <option>Dermatologist</option>
+              <option>Dentist</option>
+              <option>Neurologist</option>
+              <option>Pediatrician</option>
+              <option>Orthopedic</option>
+              <option>Gynecologist</option>
+              <option>General Physician</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="doc_phone">Phone Number</label>
+            <input type="tel" id="doc_phone" name="phone" placeholder="+977 98XXXXXXXX" />
+          </div>
+          <div class="form-group">
+            <label>Days Available</label>
+            <div class="day-checkboxes">
+              <label><input type="checkbox" name="days" value="Sunday" checked /> Sunday</label>
+              <label><input type="checkbox" name="days" value="Monday" checked /> Monday</label>
+              <label><input type="checkbox" name="days" value="Tuesday" checked /> Tuesday</label>
+              <label><input type="checkbox" name="days" value="Wednesday" /> Wednesday</label>
+              <label><input type="checkbox" name="days" value="Thursday" /> Thursday</label>
+              <label><input type="checkbox" name="days" value="Friday" /> Friday</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Available From (Morning)</label>
+            <div class="form-row">
+              <div class="form-group">
+                <label style="font-size:0.8rem;font-weight:500;">Start</label>
+                <input type="time" id="am_start" name="am_start" value="09:00" />
+              </div>
+              <div class="form-group">
+                <label style="font-size:0.8rem;font-weight:500;">To</label>
+                <input type="time" id="am_end" name="am_end" value="11:00" />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Available From (Evening)</label>
+            <div class="form-row">
+              <div class="form-group">
+                <label style="font-size:0.8rem;font-weight:500;">Start</label>
+                <input type="time" id="pm_start" name="pm_start" value="14:00" />
+              </div>
+              <div class="form-group">
+                <label style="font-size:0.8rem;font-weight:500;">To</label>
+                <input type="time" id="pm_end" name="pm_end" value="16:00" />
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
+            <button type="submit" style="flex:1;">Register</button>
+            <button type="button" onclick="window.location.href='login_signup.html'" class="btn-secondary" style="flex:1;">Back to Login</button>
+          </div>
+        </form>
+      </fieldset>
     </div>
-  </nav>
-  <div class="page-wrapper">
-    <div class="page-header">
-      <h2>Set Availability</h2>
-      <p>Select your available time slots for patient bookings.</p>
-    </div>
-    <fieldset>
-      <legend>📅 Set Availability</legend>
-      <div id="alertBox" class="alert"></div>
-      <div class="form-group">
-        <label>Days Available</label>
-        <div class="day-checkboxes">
-          <label><input type="checkbox" name="days" value="Sunday" checked /> Sunday</label>
-          <label><input type="checkbox" name="days" value="Monday" checked /> Monday</label>
-          <label><input type="checkbox" name="days" value="Tuesday" checked /> Tuesday</label>
-          <label><input type="checkbox" name="days" value="Wednesday" /> Wednesday</label>
-          <label><input type="checkbox" name="days" value="Thursday" /> Thursday</label>
-          <label><input type="checkbox" name="days" value="Friday" /> Friday</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Time Slot (Morning)</label>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <input type="time" id="am_from" value="09:00" style="max-width:160px;" />
-          <span style="color:#1a3c5c;font-weight:600;">to</span>
-          <input type="time" id="am_to" value="11:00" style="max-width:160px;" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Time Slot (Evening)</label>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <input type="time" id="pm_from" value="14:00" style="max-width:160px;" />
-          <span style="color:#1a3c5c;font-weight:600;">to</span>
-          <input type="time" id="pm_to" value="16:00" style="max-width:160px;" />
-        </div>
-      </div>
-      <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
-        <button onclick="saveAvailability()" style="flex:1;">Save Availability</button>
-        <button onclick="window.location.href='doctor_dashboard.html'" class="btn-secondary" style="flex:1;">Cancel</button>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>📋 Current Availability</legend>
-      <div class="table-wrapper" style="margin-top:14px;">
-        <table>
-          <thead>
-            <tr><th>Day</th><th>Start Time</th><th>End Time</th><th>Action</th></tr>
-          </thead>
-          <tbody id="availabilityBody">
-            <tr>
-              <td>Sunday</td><td>09:00 AM</td><td>11:00 AM</td>
-              <td><button onclick="removeSlot(this)" class="btn-danger" style="padding:5px 14px;font-size:0.8rem;">Remove</button></td>
-            </tr>
-            <tr>
-              <td>Monday</td><td>09:00 AM</td><td>11:00 AM</td>
-              <td><button onclick="removeSlot(this)" class="btn-danger" style="padding:5px 14px;font-size:0.8rem;">Remove</button></td>
-            </tr>
-            <tr>
-              <td>Tuesday</td><td>02:00 PM</td><td>04:00 PM</td>
-              <td><button onclick="removeSlot(this)" class="btn-danger" style="padding:5px 14px;font-size:0.8rem;">Remove</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </fieldset>
   </div>
-  <footer class="footer">&copy; 2026 MediCare Connect — Online Doctor Appointment System</footer>
+  
   <script>
-    function showAlert(msg,type){ const b=document.getElementById('alertBox'); b.className='alert alert-'+type; b.textContent=msg; b.style.display='block'; setTimeout(()=>b.style.display='none',3000); }
-    function formatTime(t){
-      if(!t)return'';
-      const[h,m]=t.split(':').map(Number);
-      const ampm=h>=12?'PM':'AM';
-      const hour=h%12||12;
-      return `${hour.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')} ${ampm}`;
+    function showAlert(msg, type) { 
+        const b = document.getElementById('alertBox'); 
+        b.className = 'alert alert-' + type; 
+        b.textContent = msg; 
+        b.style.display = 'block'; 
+        setTimeout(() => b.style.display = 'none', 4000); 
     }
-    function saveAvailability(){
-      const days=Array.from(document.querySelectorAll('input[name="days"]:checked')).map(c=>c.value);
-      const amFrom=document.getElementById('am_from').value;
-      const amTo=document.getElementById('am_to').value;
-      const pmFrom=document.getElementById('pm_from').value;
-      const pmTo=document.getElementById('pm_to').value;
-      if(days.length===0){showAlert('Please select at least one day.','error');return;}
-      const tbody=document.getElementById('availabilityBody');
-      days.forEach(day=>{
-        if(amFrom&&amTo){
-          const r=tbody.insertRow();
-          r.innerHTML=`<td>${day}</td><td>${formatTime(amFrom)}</td><td>${formatTime(amTo)}</td><td><button onclick="removeSlot(this)" class="btn-danger" style="padding:5px 14px;font-size:0.8rem;">Remove</button></td>`;
+    
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        try {
+            const response = await fetch('doctor_backend/process_register.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showAlert('Registration successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'doctor_dashboard.html?registered=success';
+                }, 1500);
+            } else {
+                showAlert(data.error || 'Registration failed', 'error');
+            }
+        } catch (error) {
+            showAlert('Network error. Please try again.', 'error');
         }
-        if(pmFrom&&pmTo){
-          const r=tbody.insertRow();
-          r.innerHTML=`<td>${day}</td><td>${formatTime(pmFrom)}</td><td>${formatTime(pmTo)}</td><td><button onclick="removeSlot(this)" class="btn-danger" style="padding:5px 14px;font-size:0.8rem;">Remove</button></td>`;
-        }
-      });
-      showAlert('Availability saved successfully!','success');
-    }
-    function removeSlot(btn){ btn.closest('tr').remove(); }
+    });
   </script>
 </body>
 </html>
