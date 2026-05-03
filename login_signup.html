@@ -1,36 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login / Sign Up — MediCare Connect</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e6f0fa 0%,#d0e2f0 100%);min-height:100vh;}
-    fieldset{border:2px solid #cde3f0;border-radius:20px;padding:24px 28px;background:white;box-shadow:0 8px 20px rgba(0,0,0,0.05);margin-bottom:24px;}
-    legend{background:#1a3c5c;color:white;padding:8px 22px;border-radius:40px;font-weight:bold;font-size:1.05rem;}
-    input[type="text"],input[type="email"],input[type="password"],select{padding:10px 15px;border:2px solid #d4e4ef;border-radius:25px;font-size:0.95rem;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;width:100%;transition:all 0.3s ease;background:white;color:#1a3c5c;}
-    input:focus,select:focus{outline:none;border-color:#2c7da0;box-shadow:0 0 0 3px rgba(44,125,160,0.12);}
-    label{display:block;font-weight:600;color:#1a3c5c;margin-bottom:6px;font-size:0.9rem;}
-    .form-group{margin-bottom:16px;}
-    button{background:#2c7da0;color:white;border:none;padding:10px 26px;border-radius:40px;font-size:0.92rem;font-weight:600;cursor:pointer;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;transition:all 0.3s ease;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-    button:hover{background:#1a5a7a;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.12);}
-    .tab-switcher{display:flex;border:2px solid #1a3c5c;border-radius:40px;overflow:hidden;margin-bottom:22px;}
-    .tab-btn{flex:1;padding:10px 0;background:white;color:#1a3c5c;border:none;font-size:0.95rem;font-weight:600;cursor:pointer;border-radius:0;box-shadow:none;transform:none;transition:all 0.2s ease;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-    .tab-btn:hover{background:#e6f0fa;transform:none;box-shadow:none;}
-    .tab-btn.active{background:#1a3c5c;color:white;}
-    .role-group{display:flex;gap:24px;align-items:center;margin:14px 0;}
-    .role-group label{display:flex;align-items:center;gap:8px;font-weight:600;color:#1a3c5c;cursor:pointer;margin-bottom:0;}
-    .role-group input[type="radio"]{width:16px;height:16px;accent-color:#2c7da0;cursor:pointer;}
-    .auth-center{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:30px 20px;}
-    .auth-box{width:100%;max-width:420px;}
-    .auth-box fieldset{padding:28px 32px;}
-    .alert{padding:12px 18px;border-radius:12px;font-size:0.9rem;font-weight:600;margin-bottom:16px;display:none;}
-    .alert-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
-    .alert-error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;}
-    p{color:#2c5a7a;margin-top:6px;}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e6f0fa 0%, #d0e2f0 100%);
+      min-height: 100vh;
+    }
+
+    fieldset {
+      border: 2px solid #cde3f0;
+      border-radius: 20px;
+      padding: 24px 28px;
+      background: white;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
+
+    legend {
+      background: #1a3c5c;
+      color: white;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: bold;
+      font-size: 1.05rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      padding: 10px 15px;
+      border: 2px solid #d4e4ef;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: 100%;
+      transition: all 0.3s ease;
+      background: white;
+      color: #1a3c5c;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #2c7da0;
+      box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.12);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: #1a3c5c;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    button {
+      background: #2c7da0;
+      color: white;
+      border: none;
+      padding: 10px 26px;
+      border-radius: 40px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+      background: #1a5a7a;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .tab-switcher {
+      display: flex;
+      border: 2px solid #1a3c5c;
+      border-radius: 40px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 0;
+      background: white;
+      color: #1a3c5c;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 0;
+      box-shadow: none;
+      transform: none;
+      transition: all 0.2s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .tab-btn:hover {
+      background: #e6f0fa;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .tab-btn.active {
+      background: #1a3c5c;
+      color: white;
+    }
+
+    .role-group {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin: 14px 0;
+    }
+
+    .role-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #1a3c5c;
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+
+    .role-group input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #2c7da0;
+      cursor: pointer;
+    }
+
+    .auth-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .auth-box fieldset {
+      padding: 28px 32px;
+    }
+
+    .alert {
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    p {
+      color: #2c5a7a;
+      margin-top: 6px;
+    }
   </style>
 </head>
+
 <body>
   <div class="auth-center">
     <div class="auth-box">
@@ -86,36 +249,52 @@
   </div>
   <script>
     const params = new URLSearchParams(window.location.search);
-    if (params.get('signup') === 'success') { showAlert('Signup successful! Please log in.','success'); switchTab('login'); }
+    if (params.get('signup') === 'success') { showAlert('Signup successful! Please log in.', 'success'); switchTab('login'); }
     function switchTab(tab) {
-      document.getElementById('loginTabBtn').classList.toggle('active', tab==='login');
-      document.getElementById('signupTabBtn').classList.toggle('active', tab==='signup');
-      document.getElementById('loginSection').style.display = tab==='login'?'block':'none';
-      document.getElementById('signupSection').style.display = tab==='signup'?'block':'none';
+      document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
+      document.getElementById('signupTabBtn').classList.toggle('active', tab === 'signup');
+      document.getElementById('loginSection').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('signupSection').style.display = tab === 'signup' ? 'block' : 'none';
       hideAlert();
     }
-    function showAlert(msg,type){ const b=document.getElementById('alertBox'); b.className='alert alert-'+type; b.textContent=msg; b.style.display='block'; }
-    function hideAlert(){ document.getElementById('alertBox').style.display='none'; }
-    function handleLogin() {
-      const email=document.getElementById('login_email').value.trim();
-      const pass=document.getElementById('login_password').value.trim();
-      const role=document.querySelector('input[name="login_role"]:checked').value;
-      if (!email||!pass){ showAlert('Please fill in all fields.','error'); return; }
-
-      // Store patient email for booking (NO UI change)
-      if(role==='patient'){ localStorage.setItem('patientEmail', email); }
-
-      window.location.href = role==='patient' ? 'find_doctor.html' : 'doctor_dashboard.html';
+    function showAlert(msg, type) { const b = document.getElementById('alertBox'); b.className = 'alert alert-' + type; b.textContent = msg; b.style.display = 'block'; }
+    function hideAlert() { document.getElementById('alertBox').style.display = 'none'; }
+    async function handleLogin() {
+      const email = document.getElementById('login_email').value.trim();
+      const pass  = document.getElementById('login_password').value.trim();
+      const role  = document.querySelector('input[name="login_role"]:checked').value;
+      if (!email || !pass) { showAlert('Please fill in all fields.', 'error'); return; }
+      try {
+        const res  = await fetch('api/login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass, role })
+        });
+        const data = await res.json();
+        if (data.error) { showAlert(data.message, 'error'); return; }
+        window.location.href = data.redirect;
+      } catch (e) { showAlert('Server error. Please try again.', 'error'); }
     }
-    function handleSignup() {
-      const email=document.getElementById('signup_username').value.trim();
-      const pass=document.getElementById('signup_password').value.trim();
-      const confirm=document.getElementById('signup_confirm').value.trim();
-      const role=document.querySelector('input[name="signup_role"]:checked').value;
-      if (!email||!pass||!confirm){ showAlert('Please fill in all fields.','error'); return; }
-      if (pass!==confirm){ showAlert('Passwords do not match!','error'); return; }
-      window.location.href = role==='doctor' ? 'doctor_register.html' : 'login_signup.html?signup=success';
+    async function handleSignup() {
+      const email   = document.getElementById('signup_username').value.trim();
+      const pass    = document.getElementById('signup_password').value.trim();
+      const confirm = document.getElementById('signup_confirm').value.trim();
+      const role    = document.querySelector('input[name="signup_role"]:checked').value;
+      if (!email || !pass || !confirm) { showAlert('Please fill in all fields.', 'error'); return; }
+      if (pass !== confirm) { showAlert('Passwords do not match!', 'error'); return; }
+      if (role === 'doctor') { window.location.href = 'doctor_register.html'; return; }
+      try {
+        const res  = await fetch('api/patient_register.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass, confirm_password: confirm })
+        });
+        const data = await res.json();
+        if (data.error) { showAlert(data.message, 'error'); return; }
+        window.location.href = data.redirect;
+      } catch (e) { showAlert('Server error. Please try again.', 'error'); }
     }
   </script>
 </body>
+
 </html>
