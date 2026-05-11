@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Appointments — MediCare Connect</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#e6f0fa 0%,#d0e2f0 100%);min-height:100vh;}
+    .navbar{background:white;box-shadow:0 4px 12px rgba(0,0,0,0.08);padding:14px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:999;border-bottom:2px solid #cde3f0;}
+    .navbar .brand{color:#1a3c5c;font-size:1.3rem;font-weight:700;text-decoration:none;}
+    .navbar .nav-links a{color:#1a3c5c;text-decoration:none;font-weight:600;padding:8px 16px;border-radius:30px;transition:all 0.3s ease;margin-left:6px;cursor:pointer;}
+    .navbar .nav-links a:hover{background:#e6f0fa;color:#2c7da0;}
+    .navbar .nav-links a.active{background:#1a3c5c;color:white;}
+    .page-wrapper{max-width:1100px;margin:0 auto;padding:30px 20px;}
+    .page-header{margin-bottom:24px;}
+    .page-header h2{color:#1a3c5c;font-size:1.7rem;margin-bottom:4px;}
+    .page-header p{color:#2c7da0;font-size:0.95rem;margin-top:0;}
+    fieldset{border:2px solid #cde3f0;border-radius:20px;padding:24px 28px;background:white;box-shadow:0 8px 20px rgba(0,0,0,0.05);margin-bottom:24px;}
+    legend{background:#1a3c5c;color:white;padding:8px 22px;border-radius:40px;font-weight:bold;font-size:1.05rem;}
+    table{border-collapse:collapse;width:100%;}
+    th{background:#1a3c5c;color:white;padding:12px 14px;font-weight:600;text-align:left;}
+    td{padding:12px 14px;border-bottom:1px solid #cde3f0;vertical-align:middle;color:#1a3c5c;}
+    tr:nth-child(even) td{background:#f8fbfe;}
+    tr:hover td{background:#eef4fa;}
+    .table-wrapper{border:2px solid #cde3f0;border-radius:15px;overflow:hidden;}
+    .status-booked{background:#d4edda;color:#155724;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;}
+    .status-cancelled{background:#f8d7da;color:#721c24;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;}
+    .status-confirmed{background:#d1ecf1;color:#0c5460;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;}
+    .status-pending{background:#fff3cd;color:#856404;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;}
+    .empty-msg{text-align:center;padding:40px;color:#2c7da0;font-size:1rem;}
+    .footer{text-align:center;padding:20px;color:#2c7da0;font-weight:500;font-size:0.88rem;border-top:2px solid #cde3f0;background:white;margin-top:30px;}
+    @media(max-width:768px){.navbar{flex-direction:column;gap:10px;padding:12px 16px;}.navbar .nav-links{display:flex;flex-wrap:wrap;justify-content:center;}table{font-size:0.85rem;}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="find_doctor.html" class="brand">🩺 MediCare Connect</a>
+    <div class="nav-links">
+      <a href="find_doctor.html">Find Doctor</a>
+      <a href="patient_history.html" class="active">My Appointments</a>
+      <a href="#" onclick="logout(event)">Logout</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h2>My Appointments</h2>
+      <p>View all your past and upcoming appointments.</p>
+    </div>
+
+    <fieldset>
+      <legend>📋 Appointment History</legend>
+      <div class="table-wrapper" style="margin-top:14px;">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Doctor</th>
+              <th>Specialization</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr><td colspan="6" class="empty-msg">Loading your appointments...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+
+    <div style="text-align:center; margin-top:10px;">
+      <button onclick="window.location.href='find_doctor.html'" style="padding:10px 30px;">
+        + Book New Appointment
+      </button>
+    </div>
+  </div>
+
+  <footer class="footer">&copy; 2026 MediCare Connect — Online Doctor Appointment System</footer>
+  <script>
+    async function loadHistory() {
+      try {
+        const res  = await fetch('api/patient_history.php');
+        const data = await res.json();
+        const tbody = document.getElementById('historyBody');
+
+        if (data.error) {
+          tbody.innerHTML = `<tr><td colspan="6" class="empty-msg">${data.message}</td></tr>`;
+          if (data.redirect) window.location.href = data.redirect;
+          return;
+        }
+
+        if (!data.appointments || data.appointments.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">You have no appointments yet. <a href="find_doctor.html" style="color:#2c7da0;">Book one now!</a></td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        data.appointments.forEach((appt, i) => {
+          const statusClass = 'status-' + appt.status.toLowerCase();
+          tbody.innerHTML += `
+            <tr>
+              <td>${i + 1}</td>
+              <td><strong>${appt.doctor_name}</strong></td>
+              <td>${appt.specialization || '—'}</td>
+              <td>${appt.appointment_date}</td>
+              <td>${appt.time_slot}</td>
+              <td><span class="${statusClass}">${appt.status}</span></td>
+            </tr>`;
+        });
+      } catch(e) {
+        document.getElementById('historyBody').innerHTML =
+          '<tr><td colspan="6" class="empty-msg">Failed to load appointments. Please try again.</td></tr>';
+      }
+    }
+
+    async function logout(e) {
+      e.preventDefault();
+      await fetch('api/logout.php', { method: 'POST' });
+      window.location.href = 'login_signup.html';
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>

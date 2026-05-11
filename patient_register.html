@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Registration — MediCare Connect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e6f0fa 0%, #d0e2f0 100%);
+            min-height: 100vh;
+        }
+
+        fieldset {
+            border: 2px solid #cde3f0;
+            border-radius: 20px;
+            padding: 24px 28px;
+            background: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        legend {
+            background: #1a3c5c;
+            color: white;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            padding: 10px 15px;
+            border: 2px solid #d4e4ef;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            transition: all 0.3s ease;
+            background: white;
+            color: #1a3c5c;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.12);
+        }
+
+        input[readonly] {
+            background: #f4f9ff;
+            color: #7a9bb5;
+            cursor: not-allowed;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #1a3c5c;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        button {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 40px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: #1a5a7a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-secondary {
+            background: #7f8c8d;
+        }
+
+        .btn-secondary:hover {
+            background: #5d6d7e;
+        }
+
+        .auth-center {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .alert {
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        p {
+            color: #2c5a7a;
+            margin-top: 6px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-center">
+        <div style="width:100%;max-width:480px;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <h1 style="color:#1a3c5c;font-size:1.8rem;">🩺 MediCare Connect</h1>
+                <p style="color:#2c7da0;margin-top:4px;">Complete Your Patient Profile</p>
+            </div>
+            <fieldset>
+                <legend>Patient Registration</legend>
+                <div id="alertBox" class="alert"></div>
+                <p style="margin-bottom:16px;font-size:0.9rem;">Almost there! Fill in your details to complete
+                    registration.</p>
+
+                <div class="form-group">
+                    <label for="pat_email">Email</label>
+                    <input type="email" id="pat_email" placeholder="Your email address" />
+                </div>
+
+                <div class="form-group">
+                    <label for="pat_name">Full Name</label>
+                    <input type="text" id="pat_name" placeholder="Enter your full name" />
+                </div>
+
+                <div class="form-group">
+                    <label for="pat_phone">Phone Number</label>
+                    <input type="tel" id="pat_phone" placeholder="Enter your phone number" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pat_age">Age</label>
+                        <input type="number" id="pat_age" placeholder="Your age" min="1" max="120" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pat_gender">Gender</label>
+                        <select id="pat_gender">
+                            <option value="">— Select —</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
+                    <button id="regBtn" onclick="handleRegister()" style="flex:1;">Complete Registration</button>
+                    <button onclick="window.location.href='login_signup.html'" class="btn-secondary"
+                        style="flex:1;">Back</button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <script>
+        // ── Read email and password from sessionStorage ────
+        const patEmail = sessionStorage.getItem('pat_email') || '';
+        const patPass = sessionStorage.getItem('pat_pass') || '';
+
+        // Only pre-fill if it is a valid email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (patEmail && emailRegex.test(patEmail)) {
+            document.getElementById('pat_email').value = patEmail;
+        } else {
+            // Clear invalid session data
+            sessionStorage.removeItem('pat_email');
+        }
+
+        function showAlert(msg, type) {
+            const b = document.getElementById('alertBox');
+            b.className = 'alert alert-' + type;
+            b.textContent = msg;
+            b.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setLoading(loading) {
+            const btn = document.getElementById('regBtn');
+            btn.disabled = loading;
+            btn.innerHTML = loading ? '<span class="spinner"></span> Registering...' : 'Complete Registration';
+        }
+
+        async function handleRegister() {
+            const email = document.getElementById('pat_email').value.trim();
+            const name = document.getElementById('pat_name').value.trim();
+            const phone = document.getElementById('pat_phone').value.trim();
+            const age = document.getElementById('pat_age').value.trim();
+            const gender = document.getElementById('pat_gender').value;
+
+            if (!email || !name || !phone || !age || !gender) {
+                showAlert('Please fill in all fields.', 'error'); return;
+            }
+
+            if (!patPass) {
+                showAlert('Session expired. Please sign up again.', 'error');
+                setTimeout(() => window.location.href = 'login_signup.html', 2000);
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                // Step 1 — Register patient
+                const regRes = await fetch('api/patient_register.php', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email, name, phone,
+                        age: parseInt(age),
+                        gender,
+                        password: patPass,
+                        confirm_password: patPass
+                    })
+                });
+                const regData = await regRes.json();
+                if (regData.error) { showAlert(regData.message, 'error'); return; }
+
+                // Step 2 — Auto-login
+                const loginRes = await fetch('api/login.php', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password: patPass, role: 'patient' })
+                });
+                const loginData = await loginRes.json();
+
+                // Clear sessionStorage
+                sessionStorage.removeItem('pat_email');
+                sessionStorage.removeItem('pat_pass');
+
+                if (loginData.error) {
+                    showAlert('Registration successful! Please log in.', 'success');
+                    setTimeout(() => window.location.href = 'login_signup.html', 1500);
+                    return;
+                }
+
+                // Step 3 — Redirect to patient dashboard
+                showAlert('Registration successful! Redirecting...', 'success');
+                setTimeout(() => window.location.href = 'find_doctor.html', 1000);
+
+            } catch (e) {
+                showAlert('Server error. Please try again.', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+    </script>
+</body>
+
+</html>
